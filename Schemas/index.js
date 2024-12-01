@@ -23,9 +23,16 @@ type Author {
     note(noteId: String): Note,
   }
   type Mutation{
-   addFolder(name: String!): Folder,
-    addNote(content: String!,folderId:ID!): Note,
-    updateNote(content:String!,id:String!):Note,
-   register(uid: String!, name: String!): Author
+  addFolder(name: String!): Folder,
+    addNote(content: String!, folderId: ID!): Note,
+    updateNote(id: String!,content: String!): Note,
+    register(uid: String!, name: String!): Author
+    pushNotification(content: String): Message
   }
+   type  Message{
+   message:String}
+   type Subscription{
+   folderCreated: Message,
+   notification: Message
+   } 
 `;

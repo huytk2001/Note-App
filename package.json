@@ -19,6 +19,7 @@
     "express": "^4.19.2",
     "firebase-admin": "^13.0.1",
     "graphql": "^16.9.0",
+    "graphql-subscriptions": "^3.0.0",
     "graphql-ws": "^5.16.0",
     "http": "^0.0.1-security",
     "mongoose": "^8.8.3",

@@ -20,11 +20,32 @@ const httpServer = http.createServer(app);
 
 const URI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.lojl1.mongodb.net/`;
 const PORT = process.env.PORT || 4000;
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+const schema = makeExecutableSchema({ typeDefs, resolvers });
+// Creating the WebSocket server
+const wsServer = new WebSocketServer({
+  // This is the `httpServer` we created in a previous step.
+  server: httpServer,
+  // Pass a different path here if app.use
+  // serves expressMiddleware at a different path
+  path: "/graphql",
 });
+
+// Hand in the schema we just created and have the
+// WebSocketServer start listening.
+const serverCleanup = useServer({ schema }, wsServer);
+const server = new ApolloServer({
+  schema,
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+
+  async serverWillStart() {
+    return {
+      async drainServer() {
+        await serverCleanup.dispose();
+      },
+    };
+  },
+});
+
 await server.start();
 const authorizationJWT = async (req, res, next) => {
   console.log({ authorization: req.headers.authorization });
