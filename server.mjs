@@ -83,12 +83,12 @@ app.use(
 );
 mongoose.set("strictQuery", false);
 mongoose
-  .connect(URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(URI)
   .then(async () => {
     console.log("Connected to DB");
     await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
     console.log("🚀 Server ready at http://localhost:4000");
+  })
+  .catch((err) => {
+    console.error("Error connecting to MongoDB", err);
   });
