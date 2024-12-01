@@ -8,7 +8,9 @@ import cors from "cors";
 import mongoose from "mongoose";
 import { resolvers } from "./resolvers/resolvers.js";
 import { typeDefs } from "./Schemas/index.js";
-
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import { WebSocketServer } from "ws";
+import { useServer } from "graphql-ws/lib/use/ws";
 import "dotenv/config";
 import "./firebaseConfig.js";
 import { getAuth } from "firebase-admin/auth";
